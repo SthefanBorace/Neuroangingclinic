@@ -864,7 +864,9 @@ const CONFIG = {
   // 2. CALENDLY — pega aquí el link público del tipo de evento.
   //    Ejemplo: "https://calendly.com/neuroaging/consulta-inicial"
   //    Déjalo en "" si todavía no existe la cuenta.
-  calendly: "",
+  //    NOTA: pega el link limpio. Si traes parámetros de la barra
+  //    del navegador (?back=1&month=...) el código los descarta solo.
+  calendly: "https://calendly.com/startcreativestudiopty/30min",
 
   // 3. FORMULARIO — correo donde quieres recibir los mensajes.
   //    Usa formsubmit.co (gratis, sin cuenta). La PRIMERA vez que
@@ -935,11 +937,15 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
   if(!url || url.indexOf("calendly.com/") === -1) return; // deja el mensaje de fallback
 
+  // Descarta parámetros de navegación (?back=1&month=2026-08) que se
+  // pegan sin querer al copiar desde la barra del navegador.
+  url = url.split("?")[0].replace(/\/+$/, "");
+
   if(fallback) fallback.remove();
 
   // Colores de marca dentro del widget
   var params = "hide_gdpr_banner=1&primary_color=C9832B&background_color=fbfaf7&text_color=1f2a26";
-  var full = url + (url.indexOf("?") > -1 ? "&" : "?") + params;
+  var full = url + "?" + params;
 
   var css = document.createElement("link");
   css.rel = "stylesheet";
